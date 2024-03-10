@@ -1,5 +1,6 @@
-import { component$, Slot } from "@builder.io/qwik";
-import { Link, routeLoader$, type RequestHandler } from "@builder.io/qwik-city";
+import { component$, Slot, useContext } from "@builder.io/qwik";
+import { Link, type RequestHandler } from "@builder.io/qwik-city";
+import { UserContextId } from "~/root";
 
 export const onGet: RequestHandler = async ({ cacheControl }) => {
   // Control caching for this request for best performance and to reduce hosting costs:
@@ -12,19 +13,8 @@ export const onGet: RequestHandler = async ({ cacheControl }) => {
   });
 };
 
-export const loadUserFromCookie = routeLoader$(async (requestEvent) => {
-  console.log(
-    "This logs every time I navigate to a page. Which means that if I look-up the user based on the cookie, it will do that logic every time I navigate to a page"
-  );
-  return {
-    userId: "12345",
-    username: "danbucholtz",
-    profilePhotoUrl: "https://myapp.com/photos/blah.jpg",
-  };
-});
-
 export default component$(() => {
-  const user$ = loadUserFromCookie();
+  const user = useContext(UserContextId);
 
   return (
     <>
@@ -55,6 +45,10 @@ export default component$(() => {
         However, in Qwik I'm not sure of a way to do it only once. As you'll see in the vite log, every time I navigate
         to a page, <b>the loader is firing an attempting to load the session data</b>.
       </p>
+      <br />
+      <br />
+      <p>Userame: {user.value?.username}</p>
+      <p>User ID: {user.value?.userId}</p>
     </>
   );
 });
