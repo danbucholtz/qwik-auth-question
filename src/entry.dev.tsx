@@ -13,5 +13,6 @@ import { render, type RenderOptions } from "@builder.io/qwik";
 import Root from "./root";
 
 export default function (opts: RenderOptions) {
-  return render(document, <Root />, opts);
+  //Can do the same in here, but for simplicity's sake I'm just gonna pass null
+  return render(document, <Root user={null} />, opts);
 }
